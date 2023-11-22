@@ -29,10 +29,9 @@ const irListaDisponibles=()=>{
   const [numeroRenta,setNumeroRenta] = useState('');
   const[carros,setCarros]=useState([]);
   const [username,setUsername]= useState('');
-  
+  const [fechaLimite,setFechaLimite]=useState('')
 
-
-      
+     
 
     //Controlador
     const {control,handleSubmit,formState: { errors },reset,setValue,} = useForm({
@@ -44,34 +43,14 @@ const irListaDisponibles=()=>{
       });
 
 
-  // Funciones 
 
-
-  /*const traerNumerosRenta = async () => {
-    try {
-      const response = await axios.get(`http://127.0.0.1:7000/api/rents/listarentnumber`);
-
-    
-      const listaRentNumber=response.data
-      setCarros(listaRentNumber);
-      console.log(listaRentNumber)
-      
-
-  } catch (error) {
-      console.log(error)
-      alert(error)
-  }
-  finally {
-  }
-
-}*/
 
 useEffect(() => {
     traerCarrosNoDisponibles()
 },[])
    
 
-
+//Funciones
 const traerCarrosNoDisponibles = async () => {
     try {
       const response = await axios.get(`http://127.0.0.1:7000/api/cars/listarcar/nodisponibles`);
@@ -100,7 +79,9 @@ const traerNumeroRenta = async (placa) => {
 
     console.log({response})
       const numeroRenta= response.data.rentnumber
+      const fechaLimite = response.data.finaldate
       setNumeroRenta(numeroRenta);
+      setFechaLimite(fechaLimite);
       setValue('rentnumber',numeroRenta);
       console.log(numeroRenta)
       
@@ -126,6 +107,80 @@ const traerNumeroRenta = async (placa) => {
     });
     return elementosPicker;
   };
+
+function generarCadenaUnica() {
+    const timestamp = Date.now().toString(); // Obtiene el timestamp actual como cadena
+    const numeroAleatorio = Math.floor(Math.random() * 1000).toString(); // Genera un número aleatorio como cadena
+    return timestamp + numeroAleatorio;
+}
+
+
+
+
+
+  // Registrar devolucion
+  
+  const registrarDevolucion = async (data) => {
+    const {rentnumber,returndate}=data
+    
+    let fechaLista=new Date(returndate);
+    
+    let fechaDevolucionCompara = new Date(fechaLista.getFullYear(),fechaLista.getMonth(),fechaLista.getDate())
+
+    let fechaLimiteCompara=new Date(fechaLimite.getFullYear(),fechaLimite.getMonth(),fechaLimite.getDate())
+
+    const datos ={
+     returndate:fechaLista,
+     rentnumber:rentnumber,
+     platenumber:placa,
+     returnnumber:generarCadenaUnica()
+    
+  
+    }
+  
+
+    if(fechaDevolucionCompara>=fechaLimiteCompara){
+      try {
+
+        
+        const response = await axios.post(`http://127.0.0.1:7000/api/returns/returncar`,datos);
+        console.log(response.data.error)
+        if (response.data.error==false) 
+        { 
+
+            setErrorMessage(false);
+            setMessage('Devolución Exitosa');
+            reset();
+            setTimeout(() => {
+              setMessage('');
+          }, 2000)
+         
+        }
+        else {
+            setErrorMessage(true);
+            setMessage("Hubo un error verifique la placa")
+            setTimeout(() => {
+                setMessage('');
+            }, 2000)
+  
+        }
+    } catch (error) {
+        console.log(error)
+        
+    }
+    finally {
+    }
+
+    }else{
+        setErrorMessage(true);
+        setMessage("El vehiculo ha sido devuelto debe pagar intereses equivalente al tiempo adicional")
+        setTimeout(() => {
+            setMessage('');
+        }, 2000)
+    }
+
+    } 
+
  
 return(
 
