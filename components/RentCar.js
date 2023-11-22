@@ -21,6 +21,10 @@ export default function RentCar(){
       navigation.navigate('ListaDisponibles')
   }
 
+  
+ 
+
+
   //UseState
     const [errormessage, setErrorMessage] = useState(false);
     const [message, setMessage] = useState(''); 

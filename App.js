@@ -14,6 +14,7 @@ import RentCar from './components/RentCar';
 import ListaDisponibles from './components/ListaDisponibles';
 //Tabs
 import Tabs from './components/Tabs';
+import DevolucionCarro from './components/DevolucionCarro';
 
 
 export default function App() {
@@ -73,6 +74,17 @@ export default function App() {
           component={ListaDisponibles}
           options={{ headerShown: false }} // Puedes ocultar también la barra de navegación aquí si es necesario
         />
+
+        
+    <Stack.Screen
+          name="DevolucionCarro"
+          component={DevolucionCarro}
+          options={{ headerShown: false }} // Puedes ocultar también la barra de navegación aquí si es necesario
+        />
+
+
+
+
 
 
 

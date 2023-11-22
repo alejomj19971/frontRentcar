@@ -10,6 +10,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Car from './Car'
 import Login from './Login'
 import RentCar from './RentCar';
+import DevolucionCarro from './DevolucionCarro';
 const Tab = createBottomTabNavigator();
 
 
@@ -50,6 +51,17 @@ return(
         name="RentCar" component={RentCar} 
 
         />
+
+
+              
+    <Tab.Screen options={{ tabBarLabel:'Devolucion',
+        headerShown:false,tabBarStyle:{display:'none'},
+            tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="car" color={color} size={26} />)}} 
+        name="DevolucionCarro" component={DevolucionCarro} 
+
+        />
+
 
 
      
