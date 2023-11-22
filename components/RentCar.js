@@ -461,7 +461,7 @@ const desactivarAuto = async()=>{
       onPress={irListaDisponibles}
       labelStyle={{ color: "white" }}
     >
-      Lista de rentas
+      Lista de Vehiculos Disponibles
     </Text>
   
     </View>
