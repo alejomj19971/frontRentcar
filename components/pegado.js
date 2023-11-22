@@ -9,7 +9,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { useForm, Controller } from 'react-hook-form';
 import axios from 'axios'
 
-export default function  DevolucionCarro() {
+export default function  Pegado() {
 // Funciones navegación
 const navigation = useNavigation();
   
@@ -30,7 +30,7 @@ const irListaDisponibles=()=>{
   const[carros,setCarros]=useState([]);
   const [username,setUsername]= useState('');
   const [fechaLimite,setFechaLimite]=useState('')
-const [consulto,setConsulto]=useState(false)
+  let consulto;
      
 
     //Controlador
@@ -83,13 +83,12 @@ const traerNumeroRenta = async (placa) => {
       setNumeroRenta(numeroRenta);
       setFechaLimite(fechaLimite);
       setValue('rentnumber',numeroRenta);
-      setConsulto(true) ;
-      console.log(consulto)
+      consulto=true;
+      console.log(numeroRenta)
     }else{
       errormessage=true
       setErrorMessage('Este Vehiculo no se encuentra rentado verifique la placa');
       setTimeout(() => {
-        setConsulto(false);
         setErrorMessage('');
       }, 2000);
     }
@@ -123,6 +122,43 @@ function generarCadenaUnica() {
 }
 
 
+const activarAuto = async()=>{
+  const datos={
+      platenumber:placa,
+      state:true
+  }
+  try {
+      const response = await axios.put(`http://127.0.0.1:7000/api/cars/updatecar`,datos);
+      console.log(response.data.error)
+      if (response.data.error==false) 
+      { 
+          setErrorMessage(false);
+          setMessage('Actualización Exitosa Vehiculo activado');
+          reset();
+          setTimeout(() => {
+          setMessage('');
+          
+           
+        }, 2000)
+       
+      }
+      else {
+          setErrorMessage(true);
+          setMessage("No fue posible actualizar ")
+          setTimeout(() => {
+              setMessage('');
+          }, 2000)
+
+      }
+  } catch (error) {
+      console.log(error)
+      
+  }
+  finally {
+  }
+// 
+}
+
 
 
   // Registrar devolucion
@@ -132,7 +168,6 @@ function generarCadenaUnica() {
     
     let fechaLista=new Date(returndate);
     let fechaLimite1=new Date(fechaLimite)
-    
     let fechaDevolucionCompara = new Date(fechaLista.getFullYear(),fechaLista.getMonth(),fechaLista.getDate())
 
     let fechaLimiteCompara=new Date(fechaLimite1.getFullYear(),fechaLimite1.getMonth(),fechaLimite1.getDate())
@@ -147,10 +182,9 @@ function generarCadenaUnica() {
     }
     console.log(datos)
   
-    if(consulto==true){
+    if(consulto){
       console.log('pase por aqui verifque consultar')
     if(fechaDevolucionCompara>=fechaLimiteCompara){
-      console.log("Llego aqui")
       try {
 
         console.log('pase por aqui antes del axios')
@@ -158,6 +192,7 @@ function generarCadenaUnica() {
         console.log(response.data.error)
         if (response.data.error==false) 
         { 
+            activarAuto();
             setErrorMessage(false);
             setMessage('Devolución Exitosa');
             reset();
@@ -188,15 +223,9 @@ function generarCadenaUnica() {
             setMessage('');
         }, 2000)
     }
-  
-    }else{
-      setErrorMessage(true);
-      setMessage("Por favor busque el vehiculo antes de devolverlo")
-      setTimeout(() => {
-          setMessage('');
-      }, 2000)
-    } 
   }
+    } 
+
  
 return(
 
