@@ -202,7 +202,7 @@ return(
 
 <View style={styles.container}>
         <View style={{padding:40,backgroundColor:'#FFFFFF',borderCurve:'continuous',borderRadius:20,border:'none',shadowRadius:2,shadowColor:'#6366f1'}}>
-          <Text variant="titleLarge" style={{marginBottom:10,marginTop:10,fontSize:25,color:'#f16366',textAlign:'center'}}>Rentar Vehiculo</Text>
+          <Text variant="titleLarge" style={{marginBottom:10,marginTop:10,fontSize:25,color:'#f16366',textAlign:'center'}}>Devolver Vehiculo</Text>
           
           <Text style={{marginBottom :5, margintTop:5,textAlign:'center', color:errormessage?'#f16366':'#66f169'  }}>
           {message}
@@ -270,7 +270,7 @@ return(
      <DatePickerInput
        mode="outlined"
        locale="es"
-       label="Creado "
+       label="Fecha Entrega"
        value={value}
        onChange={onChange}
        onBlur={onBlur}
@@ -302,7 +302,7 @@ return(
           onPress={handleSubmit(registrarDevolucion)}
           labelStyle={{ color: "white" }}
         >
-          RENTAR VEHICULO
+         DEVOLVER VEHICULO
         </Button>
   
       
