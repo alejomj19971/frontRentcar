@@ -30,9 +30,8 @@ const irListaDisponibles=()=>{
   const[carros,setCarros]=useState([]);
   const [username,setUsername]= useState('');
   const [fechaLimite,setFechaLimite]=useState('')
-const [consulto,setConsulto]=useState(false)
-     
-
+const [consulto,setConsulto]=useState(false);
+const [hayCarros,setHayCarros]=useState(false);
     //Controlador
     const {control,handleSubmit,formState: { errors },reset,setValue,} = useForm({
         defaultValues: {
@@ -106,14 +105,18 @@ const traerNumeroRenta = async (placa) => {
 
 
   const renderizarCarrosEnPicker = () => {
-    const elementosPicker = [];
-    carros.forEach((carro) => {
-      elementosPicker.push(
-        <Picker.Item  key={carro._id}  label={carro.platenumber} value={carro.platenumber} />
-        
-      );
-    });
-    return elementosPicker;
+    const elementosPicker = []
+
+      carros.forEach((carro) => {
+        elementosPicker.push(
+          <Picker.Item  key={carro._id}  label={carro.platenumber} value={carro.platenumber} />
+          
+        );
+      });
+      
+      return elementosPicker;
+ 
+  
   };
 
 function generarCadenaUnica() {

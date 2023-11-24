@@ -28,7 +28,7 @@ const EditarCarro = () => {
     const navigation = useNavigation();
   
     const irListaCarros=()=>{
-        navigation.navigate('ListaCarros')
+        navigation.navigate('Home')
     }
     
     

@@ -12,6 +12,8 @@ import axios from 'axios'
 
 
 
+
+
 export default function RentCar(){
 
   // Funciones navegación
@@ -20,9 +22,12 @@ export default function RentCar(){
   const irListaDisponibles=()=>{
       navigation.navigate('ListaDisponibles')
   }
+  const irLogin=()=>{
+      navigation.navigate('Login')
+  }
 
   
- 
+  const random4DigitNumber = () =>  {return Math.floor(1000 + Math.random() * 9000);}
 
 
   //UseState
@@ -32,6 +37,7 @@ export default function RentCar(){
     const [placa,setPlaca]= useState('')
     const[carros,setCarros]=useState([]);
     const [username,setUsername]= useState('');
+    const [numeroRenta,setNumeroRenta]= useState('');
     
 
     //Controlador
@@ -155,9 +161,10 @@ const desactivarAuto = async()=>{
 }
 
   const registrarRenta = async (data) => {
-
-    const {username,rentnumber}=data
+    let id = random4DigitNumber()
+    const {username}=data
     setUsername(username)
+    setNumeroRenta(id)
     //Valores de fecha
     let fechaInicial=new Date(data.initialdate);
     let fechaFinal=new Date(data.finaldate);
@@ -170,12 +177,12 @@ const desactivarAuto = async()=>{
     let fechaFinalCompara=new Date(fechaFinal.getFullYear(),fechaFinal.getMonth(),fechaFinal.getDate())
 
     const datos ={
-      rentnumber:rentnumber,
+      rentnumber:id,
       platenumber: placa,
       username: username,
       initialdate: fechaInicial,
       finaldate:fechaFinal,
-      state:checked
+      state:false
     }
   
   // Comprobar que la placa no este vacia
@@ -200,6 +207,7 @@ const desactivarAuto = async()=>{
                     
                             const response = await axios.post(`http://127.0.0.1:7000/api/rents/rentarcar`,datos);
                             console.log(response.data.error)
+
                             if (response.data.error==false) 
                             { 
                                 desactivarAuto();
@@ -224,6 +232,7 @@ const desactivarAuto = async()=>{
                             
                         }
                         finally {
+                          
                         }
                     // 
                 }
@@ -271,30 +280,15 @@ const desactivarAuto = async()=>{
           </Text>
 
 {/*rentnumber */}
-<Controller
-        control={control}
-          rules={{
-                required: true,
-                pattern: /^[A-Za-zÁÉÍÓÚáéíóúñÑ0-9]+$/g
-                
-              }}
-          render={({ field: { onChange, onBlur, value } }) => (
       <TextInput
-        onBlur={onBlur}
-        onChangeText={onChange}
-        value={value}  
+        value={numeroRenta}  
         label="Número de renta"
         mode="outlined"
         textColor="#333333"
         activeOutlineColor="#6366f1"
-        right={<TextInput.Icon icon="account" />}
+        right={<TextInput.Icon icon="numeric-1-box" />}
+        disabled="true"
       />
-      )}
-            name="rentnumber"
-        />
-      {errors.rentnumber?.type === 'required' && <Text style={{color:'#f16366',marginTop:3,textAlign:'center'}} >Este Campo es Obligatorio</Text>}
-       {errors.rentnumber?.type === 'pattern' && <Text style={{color:'#f16366',marginTop:3,textAlign:'center'}}>Escribe un numero de renta solo con letras y numeros</Text>}
-
           {/*usuario */}
  <Controller
         control={control}
@@ -430,20 +424,7 @@ const desactivarAuto = async()=>{
        {errors.created?.type==="required" && <Text>Este Campo es Obligatorio</Text>}
   */}
   
-           {/*State*/}
-     {   
-        <Checkbox.Item 
-        label="Activo"
-        labelStyle={{fontSize:20 ,color:'#333333'}}
-        color="#6366f1"
-        uncheckedColor="#B3B3B3"
-        status={checked ? 'checked' : 'unchecked'}
-        onPress={() => {
-          setChecked(!checked);
-        }} />
-     
-    }
-  
+    
         <Button
           style={[{ marginTop: 20, backgroundColor: "#6366f1",border:'none' }]}
           icon="send"
@@ -463,9 +444,14 @@ const desactivarAuto = async()=>{
     >
       Lista de Vehiculos Disponibles
     </Text>
+
+    
+   
+    </View>
+
+    </View>
+    
   
-    </View>
-    </View>
         
 
 

@@ -16,7 +16,7 @@ const[carros,setCarros]=useState([]);
 const navigation = useNavigation()
 ;
 const irRegistroCarro=()=>{
-    navigation.navigate('Car');
+    navigation.navigate('Home');
 }
 
 
@@ -69,22 +69,18 @@ useEffect(() => {
       
 
     </SafeAreaView>
-
-
-
-
-
     <Text
-        style={{ marginTop: 20, backgroundColor: "#ffffff",border:'none',color:'#6366f1',textAlign:'center' }}
-        icon="send"
-        mode="outlined"
-        onPress={irRegistroCarro}
-        //onPress={registrarUsuario}
-        labelStyle={{ color: "white" }}
-        
-    >
-       Volver
-    </Text>
+  style={{ marginTop: 20, backgroundColor: "#ffffff",border:'none',color:'#6366f1',textAlign:'center' }}
+  icon="send"
+  mode="outlined"
+  onPress={irRegistroCarro}
+  labelStyle={{ color: "white" }}
+>
+  Volver
+</Text>
+
+
+
     </View>
   )
 }

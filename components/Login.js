@@ -3,11 +3,18 @@ import { useState } from "react";
 import { styles } from "../assets/styles/allstyles";
 import { TextInput, Button,Select,Icon, MD3Colors,Text} from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
-
 import { useForm, Controller } from 'react-hook-form'
 import axios from 'axios'
+import useAuth from "../assets/hooks/useAuth";
 
 function Login(){
+
+
+// Context 
+const {login,logout,user,admin,setAdmin} = useAuth();
+
+
+
   
     const navigation = useNavigation();
     const navigateToRegistro = () => {
@@ -53,12 +60,25 @@ function Login(){
                 reset();
                 navigation.navigate('vehiculoDisponible');
             }*/
-
-            setErrorMessage(false);
-            setMessage('Ingreso Exitoso');
-            navigation.navigate('Car');
-            setMessage('');
-            reset();
+            login(response.data)
+            if(response.data.role=="Administrador"){
+              setAdmin(true)
+              setErrorMessage(false);
+              setMessage('Ingreso Exitoso');
+              navigation.navigate('VehiculosDisponibles');
+              setMessage('');
+              reset();
+            }
+            else
+            {
+              setAdmin(false)
+              setErrorMessage(false);
+              setMessage('Ingreso Exitoso');
+              navigation.navigate('VehiculosDisponibles');
+              setMessage('');
+              reset();
+            }
+           
            
 
         }
